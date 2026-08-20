@@ -1,1 +1,284 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Um presente para você</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #20202b;
+      --cream: #fff8ed;
+      --coral: #f05d5e;
+      --yellow: #ffc857;
+      --teal: #54c5b2;
+      --lavender: #c8b6ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      color: var(--ink);
+      background: var(--cream);
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .scene {
+      position: relative;
+      display: grid;
+      min-height: 100vh;
+      place-items: center;
+      isolation: isolate;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 17% 19%, rgba(255, 200, 87, .35) 0 5px, transparent 6px),
+        radial-gradient(circle at 84% 25%, rgba(84, 197, 178, .38) 0 7px, transparent 8px),
+        radial-gradient(circle at 78% 80%, rgba(240, 93, 94, .27) 0 4px, transparent 5px),
+        var(--cream);
+    }
+
+    .scene::before,
+    .scene::after {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      width: 42vw;
+      height: 42vw;
+      max-width: 560px;
+      max-height: 560px;
+      border-radius: 48% 52% 55% 45%;
+      filter: blur(1px);
+      opacity: .7;
+    }
+
+    .scene::before {
+      top: -23vw;
+      left: -12vw;
+      background: var(--yellow);
+      transform: rotate(24deg);
+    }
+
+    .scene::after {
+      right: -18vw;
+      bottom: -27vw;
+      background: var(--lavender);
+      transform: rotate(-32deg);
+    }
+
+    .top-note {
+      position: absolute;
+      top: clamp(28px, 7vh, 66px);
+      left: 50%;
+      margin: 0;
+      color: rgba(32, 32, 43, .6);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      transform: translateX(-50%);
+    }
+
+    .gift-area {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: min(90vw, 520px);
+      height: min(78vh, 600px);
+    }
+
+    .intro {
+      position: absolute;
+      top: 0;
+      z-index: 2;
+      margin: 0;
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2.2rem, 6vw, 4.7rem);
+      font-weight: 400;
+      line-height: .98;
+      text-align: center;
+      text-wrap: balance;
+    }
+
+    .intro em { color: var(--coral); }
+
+    .hint {
+      position: absolute;
+      bottom: 0;
+      margin: 0;
+      color: rgba(32, 32, 43, .66);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      transition: opacity .25s ease;
+    }
+
+    .is-exploding .hint { opacity: 0; }
+
+    .gift-button {
+      position: relative;
+      z-index: 4;
+      width: clamp(160px, 33vw, 230px);
+      aspect-ratio: 1;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+      background: transparent;
+      transform: rotate(-3deg);
+      transition: transform .25s ease, filter .25s ease;
+    }
+
+    .gift-button:hover { transform: rotate(1deg) scale(1.06); filter: saturate(1.1); }
+    .gift-button:focus-visible { outline: 4px solid var(--ink); outline-offset: 12px; border-radius: 14px; }
+    .gift-button[aria-expanded="true"] { pointer-events: none; animation: vanish .55s ease forwards; }
+
+    .box, .lid { position: absolute; left: 50%; transform: translateX(-50%); }
+    .box {
+      bottom: 25px;
+      width: 78%;
+      height: 57%;
+      border: 4px solid var(--ink);
+      border-radius: 8px 8px 15px 15px;
+      background: var(--coral);
+      box-shadow: 13px 14px 0 rgba(32, 32, 43, .12);
+    }
+
+    .box::after, .lid::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 46%;
+      width: 18%;
+      background: var(--yellow);
+      border-right: 3px solid var(--ink);
+      border-left: 3px solid var(--ink);
+    }
+
+    .lid {
+      top: 29%;
+      z-index: 1;
+      width: 87%;
+      height: 25%;
+      border: 4px solid var(--ink);
+      border-radius: 9px;
+      background: var(--coral);
+      box-shadow: 9px 10px 0 rgba(32, 32, 43, .1);
+    }
+
+    .bow {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      z-index: 2;
+      width: 68px;
+      height: 45px;
+      transform: translateX(-50%);
+    }
+
+    .bow::before, .bow::after {
+      content: '';
+      position: absolute;
+      width: 43px;
+      height: 33px;
+      border: 4px solid var(--ink);
+      background: var(--yellow);
+    }
+    .bow::before { right: 32px; border-radius: 90% 15% 70% 20%; transform: rotate(28deg); }
+    .bow::after { left: 32px; border-radius: 15% 90% 20% 70%; transform: rotate(-28deg); }
+
+    .message {
+      position: absolute;
+      z-index: 5;
+      width: min(88vw, 450px);
+      padding: 28px 22px 32px;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(20px) scale(.82) rotate(-2deg);
+    }
+
+    .message.is-visible { animation: reveal .8s cubic-bezier(.2, .85, .25, 1.25) forwards; }
+    .message small { display: block; margin-bottom: 12px; color: var(--coral); font-size: .72rem; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; }
+    .message h1 { margin: 0; font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(3.1rem, 12vw, 6.8rem); font-weight: 400; line-height: .88; }
+    .message h1 span { display: block; color: var(--coral); }
+    .message p { margin: 22px 0 0; font-size: .82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+
+    .particle { position: absolute; z-index: 3; left: 50%; top: 51%; width: 13px; height: 13px; border: 2px solid var(--ink); border-radius: 3px; opacity: 0; pointer-events: none; }
+    .burst-line { position: absolute; z-index: 2; left: 50%; top: 50%; width: 10px; height: 3px; border-radius: 2px; background: var(--ink); opacity: 0; transform-origin: left center; }
+
+    .is-exploding .particle { animation: burst .9s cubic-bezier(.1, .7, .2, 1) forwards; }
+    .is-exploding .burst-line { animation: ray .7s cubic-bezier(.1, .7, .2, 1) forwards; }
+    .is-exploding .particle:nth-child(4) { --x: -180px; --y: -130px; background: var(--yellow); }
+    .is-exploding .particle:nth-child(5) { --x: 170px; --y: -150px; background: var(--teal); }
+    .is-exploding .particle:nth-child(6) { --x: -190px; --y: 95px; background: var(--lavender); }
+    .is-exploding .particle:nth-child(7) { --x: 195px; --y: 100px; background: var(--coral); }
+    .is-exploding .particle:nth-child(8) { --x: -75px; --y: -190px; width: 9px; height: 9px; background: var(--teal); }
+    .is-exploding .particle:nth-child(9) { --x: 80px; --y: 185px; width: 9px; height: 9px; background: var(--yellow); }
+    .is-exploding .particle:nth-child(10) { --x: 230px; --y: -20px; width: 7px; height: 7px; background: var(--lavender); }
+    .is-exploding .particle:nth-child(11) { --x: -230px; --y: 0; width: 7px; height: 7px; background: var(--coral); }
+    .is-exploding .burst-line:nth-child(12) { --ray-x: -55px; --ray-y: -155px; --angle: -90deg; }
+    .is-exploding .burst-line:nth-child(13) { --ray-x: 135px; --ray-y: -75px; --angle: -25deg; }
+    .is-exploding .burst-line:nth-child(14) { --ray-x: 135px; --ray-y: 75px; --angle: 25deg; }
+    .is-exploding .burst-line:nth-child(15) { --ray-x: 55px; --ray-y: 155px; --angle: 90deg; }
+    .is-exploding .burst-line:nth-child(16) { --ray-x: -135px; --ray-y: 75px; --angle: 155deg; }
+    .is-exploding .burst-line:nth-child(17) { --ray-x: -135px; --ray-y: -75px; --angle: 205deg; }
+    .is-exploding .burst-line:nth-child(18) { --ray-x: 0px; --ray-y: -155px; --angle: 270deg; }
+
+    @keyframes burst { 0% { opacity: 1; transform: translate(-50%, -50%) scale(.4) rotate(0deg); } 100% { opacity: 1; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1) rotate(180deg); } }
+    @keyframes ray { 0% { opacity: 1; transform: translate(-50%, -50%) scaleX(.3) rotate(var(--angle)); } 100% { opacity: 1; transform: translate(calc(-50% + var(--ray-x)), calc(-50% + var(--ray-y))) scaleX(1) rotate(var(--angle)); } }
+    @keyframes vanish { 0% { opacity: 1; transform: rotate(1deg) scale(1); } 100% { opacity: 0; transform: rotate(15deg) scale(.1); } }
+    @keyframes reveal { 0% { opacity: 0; transform: translateY(20px) scale(.82) rotate(-2deg); } 70% { opacity: 1; transform: translateY(-4px) scale(1.04) rotate(1deg); } 100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); } }
+
+    @media (max-width: 520px) {
+      .gift-area { height: min(74vh, 520px); }
+      .scene::before { width: 70vw; height: 70vw; top: -38vw; left: -30vw; }
+      .scene::after { width: 70vw; height: 70vw; right: -35vw; bottom: -38vw; }
+      .is-exploding .particle:nth-child(4) { --x: -110px; --y: -125px; }
+      .is-exploding .particle:nth-child(5) { --x: 110px; --y: -140px; }
+      .is-exploding .particle:nth-child(6) { --x: -125px; --y: 100px; }
+      .is-exploding .particle:nth-child(7) { --x: 125px; --y: 105px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="scene">
+    <p class="top-note">tem uma surpresa aqui</p>
+    <section class="gift-area" aria-label="Presente surpresa">
+      <p class="intro">um pequeno presente<br><em>para você</em></p>
+      <button class="gift-button" type="button" aria-label="Abrir presente" aria-expanded="false">
+        <span class="lid"></span>
+        <span class="bow"></span>
+        <span class="box"></span>
+      </button>
+      <div class="message" aria-live="polite">
+        <small>de coração</small>
+        <h1>Desculpa<br><span>Guto Mne 10</span></h1>
+        <p>feito especialmente para você</p>
+      </div>
+      <span class="particle"></span><span class="particle"></span><span class="particle"></span><span class="particle"></span>
+      <span class="particle"></span><span class="particle"></span><span class="particle"></span><span class="particle"></span>
+      <span class="burst-line"></span><span class="burst-line"></span><span class="burst-line"></span><span class="burst-line"></span>
+      <span class="burst-line"></span><span class="burst-line"></span><span class="burst-line"></span>
+      <p class="hint">clique no presente</p>
+    </section>
+  </main>
+  <script>
+    const giftArea = document.querySelector('.gift-area');
+    const giftButton = document.querySelector('.gift-button');
+    const message = document.querySelector('.message');
+
+    giftButton.addEventListener('click', () => {
+      giftButton.setAttribute('aria-expanded', 'true');
+      giftArea.classList.add('is-exploding');
+      window.setTimeout(() => message.classList.add('is-visible'), 300);
+    });
+  </script>
+</body>
+</html>
 
